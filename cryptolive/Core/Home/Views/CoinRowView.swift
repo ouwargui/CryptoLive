@@ -5,6 +5,7 @@
 //  Created by Guilherme Santos on 21/11/22.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct CoinRowView: View {
@@ -18,7 +19,7 @@ struct CoinRowView: View {
         .foregroundColor(.gray)
 
       // image
-      Image(coin.image)
+      KFImage(URL(string: coin.image))
         .resizable()
         .scaledToFit()
         .frame(width: 32, height: 32)
@@ -38,13 +39,13 @@ struct CoinRowView: View {
 
       // coin value
       VStack(alignment: .trailing) {
-        Text("\(coin.currentPrice)")
+        Text(coin.currentPrice.toCurrency())
           .font(.subheadline)
           .fontWeight(.semibold)
 
-        Text("\(coin.priceChangePercentage24H)")
+        Text(coin.priceChangePercentage24H.toPercentage())
           .font(.caption)
-          .foregroundColor(.red)
+          .foregroundColor(coin.priceChangePercentage24H > 0 ? .green : .red)
       }
     }
     .padding(.horizontal)

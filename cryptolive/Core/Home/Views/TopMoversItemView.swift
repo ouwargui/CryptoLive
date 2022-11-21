@@ -5,6 +5,7 @@
 //  Created by Guilherme Santos on 21/11/22.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct TopMoversItemView: View {
@@ -14,7 +15,7 @@ struct TopMoversItemView: View {
     VStack {
       HStack {
         // image
-        Image(systemName: "bitcoinsign.circle.fill")
+        KFImage(URL(string: coin.image))
           .resizable()
           .frame(width: 32, height: 32)
           .foregroundColor(.orange)
@@ -23,16 +24,16 @@ struct TopMoversItemView: View {
           Text(coin.symbol.uppercased())
             .font(.caption)
             .fontWeight(.bold)
-          Text("\(coin.currentPrice)")
+          Text(coin.currentPrice.toCurrency())
             .font(.caption)
             .foregroundColor(.gray)
         }
       }
 
       // coin percent change
-      Text("\(coin.priceChangePercentage24H)")
+      Text(coin.priceChangePercentage24H.toPercentage())
         .font(.title)
-        .foregroundColor(.green)
+        .foregroundColor(coin.priceChangePercentage24H > 0 ? .green : .red)
     }
     .frame(width: 140, height: 140)
     .overlay(
