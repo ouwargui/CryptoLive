@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct cryptoliveApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+struct CryptoLiveApp: App {
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
     }
+  }
 }
