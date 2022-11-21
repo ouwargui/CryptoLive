@@ -12,23 +12,29 @@ struct HomeView: View {
 
   var body: some View {
     NavigationView {
-      ScrollView(.vertical, showsIndicators: false) {
-        // top movers view
-        TopMoversView(viewModel: viewModel)
-          .padding(.vertical)
+      if viewModel.coins.isEmpty {
+        ProgressView {
+          Text("Fetching coin data")
+        }
+      } else {
+        ScrollView(.vertical, showsIndicators: false) {
+          // top movers view
+          TopMoversView(viewModel: viewModel)
+            .padding(.vertical)
 
-        Divider()
+          Divider()
 
-        // all coins view
-        AllCoinsView(viewModel: viewModel)
-      }
-      .navigationTitle("Live Prices")
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          Button {
-            viewModel.fetchCoinData()
-          } label: {
-            Text("Refresh")
+          // all coins view
+          AllCoinsView(viewModel: viewModel)
+        }
+        .navigationTitle("Live Prices")
+        .toolbar {
+          ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+              viewModel.fetchCoinData()
+            } label: {
+              Text("Refresh")
+            }
           }
         }
       }
