@@ -21,6 +21,8 @@ class HomeViewModel: ObservableObject {
   }
 
   func fetchCoinData() {
+    print("DEBUG: Fetching coin data...")
+
     let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h"
 
     guard let url = URL(string: urlString) else { return }
@@ -38,6 +40,7 @@ class HomeViewModel: ObservableObject {
         DispatchQueue.main.async {
           self.coins = coins
           self.configureTopMovingCoins()
+          print("DEBUG: Coin data fetched!")
         }
       } catch let decodeError {
         print("DEBUG: Error \(decodeError.localizedDescription)")

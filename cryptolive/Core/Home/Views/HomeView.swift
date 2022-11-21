@@ -23,6 +23,15 @@ struct HomeView: View {
         AllCoinsView(viewModel: viewModel)
       }
       .navigationTitle("Live Prices")
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button {
+            viewModel.fetchCoinData()
+          } label: {
+            Text("Refresh")
+          }
+        }
+      }
     }
   }
 }
