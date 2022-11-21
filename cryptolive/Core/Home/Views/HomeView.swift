@@ -11,19 +11,16 @@ struct HomeView: View {
   var body: some View {
     NavigationView {
       ScrollView(.vertical, showsIndicators: false) {
-        VStack {
-          // top movers view
+        // top movers view
+        TopMoversView()
+          .padding(.vertical)
 
-          // all coins view
-        }
+        Divider()
+
+        // all coins view
+        AllCoinsView()
       }
       .navigationTitle("Live Prices")
     }
-  }
-}
-
-struct HomeView_Previews: PreviewProvider {
-  static var previews: some View {
-    HomeView()
   }
 }
