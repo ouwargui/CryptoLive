@@ -7,12 +7,15 @@
 
 import SwiftUI
 
+@MainActor
 class HomeViewModel: ObservableObject {
   @Published var coins = [Coin]()
   @Published var topMovingCoins = [Coin]()
 
   init() {
-    fetchCoinData()
+    Task {
+      await fetchCoinData()
+    }
   }
 
   func configureTopMovingCoins() {
@@ -20,31 +23,21 @@ class HomeViewModel: ObservableObject {
     topMovingCoins = Array(topMovers.prefix(5))
   }
 
-  func fetchCoinData() {
+  func fetchCoinData() async {
     print("DEBUG: Fetching coin data...")
 
     let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h"
 
     guard let url = URL(string: urlString) else { return }
 
-    URLSession.shared.dataTask(with: url) { data, _, error in
-      if let error = error {
-        print("DEBUG: Error \(error.localizedDescription)")
-        return
-      }
-
-      guard let data = data else { return }
-
-      do {
-        let coins = try JSONDecoder().decode([Coin].self, from: data)
-        DispatchQueue.main.async {
-          self.coins = coins
-          self.configureTopMovingCoins()
-          print("DEBUG: Coin data fetched!")
-        }
-      } catch let decodeError {
-        print("DEBUG: Error \(decodeError.localizedDescription)")
-      }
-    }.resume()
+    do {
+      let (data, _) = try await URLSession.shared.data(from: url)
+      let coins = try JSONDecoder().decode([Coin].self, from: data)
+      self.coins = coins
+      configureTopMovingCoins()
+      print("DEBUG: Coin data fetched!")
+    } catch {
+      print("DEBUG: Error \(error.localizedDescription)")
+    }
   }
 }

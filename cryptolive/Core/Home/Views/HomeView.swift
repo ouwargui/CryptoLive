@@ -31,11 +31,16 @@ struct HomeView: View {
         .toolbar {
           ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-              viewModel.fetchCoinData()
+              Task {
+                await viewModel.fetchCoinData()
+              }
             } label: {
               Text("Refresh")
             }
           }
+        }
+        .refreshable {
+          await viewModel.fetchCoinData()
         }
       }
     }
